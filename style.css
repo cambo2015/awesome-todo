@@ -1,0 +1,21 @@
+html{
+    background-color: black;
+    margin:0;
+    padding: 0px;
+}
+body{
+    background-color: black !important;
+}
+
+svg{
+    position:static !important;
+    
+}
+
+
+#delete-all{
+    position: fixed;
+    right: 5px;
+    margin:10px;
+    bottom: 50px;
+}
