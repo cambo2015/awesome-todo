@@ -18,6 +18,7 @@ const gold = "#ffd700";
 const paper = Raphael(0, 0, horizSpacing * numberofHalfHours, innerHeight);
 paper.canvas.style.backgroundColor = black;
 
+                
 // HELPERS
 //starts at 0 goes to max-1
 
@@ -185,6 +186,8 @@ const addItem = (x, y, halfHours, name, color, width = 0) => {
   name = name.toString();
   const rect = paper.rect(x, y, width, height, 5);
   rect.attr("fill", color);
+  //   add sound
+
   //   edit name
 
   const text = paper.text(x + 50, y + 10, name).attr({ fill: "#fff" });
@@ -200,6 +203,7 @@ const addItem = (x, y, halfHours, name, color, width = 0) => {
     .circle(x + width - buttonSpacing * 2, y + 10, 6)
     .attr({ fill: "#fff" })
     .click(() => {
+      
       deleteItem(name);
       draw();
     });
@@ -282,7 +286,6 @@ document.addEventListener("keydown", (event) => {
   //   alert(platform);
   //   if (platform === "macOS") {
   if (event.ctrlKey && event.key === "z") {
-    
   }
 });
 
