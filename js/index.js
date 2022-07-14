@@ -255,6 +255,18 @@ const addItem = (
   });
 };
 
+//___ADD ITEM via dbl click___
+
+const checkNameExists =(name)=>{
+  const foundItems = allItems.filter(x=>x.name ===name);
+  console.log(foundItems);
+  if (foundItems.length > 0) {
+    alert(`${foundItems.name} found!`);
+    return true;
+  }
+  return false;
+}
+
 //___ADD NEW ITEM MODAL__
 let myModal = new bootstrap.Modal(
   document.getElementById("exampleModal"),
@@ -291,6 +303,8 @@ paper.raphael.dblclick((e) => {
 var createItemModal = document.getElementById("exampleModal");
 createItemModal.addEventListener("show.bs.modal", function (event) {
   document.getElementById("taskname").value="";
+  const warningText = document.getElementById("create-warning-text");
+  warningText.innerHTML = "";
 });
 
 createItemModal.addEventListener('hidden.bs.modal', function (event) {
@@ -309,17 +323,22 @@ document
     event.preventDefault();
     // console.log(myModal);
     const taskName = document.getElementById("taskname");
-    myModal.hide();
-    const newlyAddedItem = allItems[allItems.length - 1];
-    newlyAddedItem.name = taskName.value;
-
-    addtoSideMenu(taskName.value);
-    draw();
+    const nameAlreadyExists = checkNameExists(taskName.value);
+    if (nameAlreadyExists === false) {
+      myModal.hide();
+      const newlyAddedItem = allItems[allItems.length - 1];
+      newlyAddedItem.name = taskName.value;
+      addtoSideMenu(taskName.value);
+      draw();
+    } else {
+      const warningText = document.getElementById("create-warning-text");
+      warningText.innerHTML = "name already exists. Try another one";
+    }
     
     
   });
 
-// delete all items/tasks
+// ADDITIONAL FUNCTIONALITY
 document
   .getElementById("delete-all")
   .addEventListener("click", function (event) {
