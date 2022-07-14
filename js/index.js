@@ -217,7 +217,9 @@ const addItem = (
 
   //   edit name
 
-  const text = paper.text(x + 50, y + 10, name.substring(0,20)).attr({ fill: "#fff" });
+  const text = paper
+    .text(x + 50, y + 10, name.substring(0, 20))
+    .attr({ fill: "#fff" });
   text.click(() => {
     //   alert("clicked");
     itemObjectName = name;
@@ -257,27 +259,23 @@ const addItem = (
 
 //___ADD ITEM via dbl click___
 
-const checkNameExists =(name)=>{
-  const foundItems = allItems.filter(x=>x.name ===name);
+const checkNameExists = (name) => {
+  const foundItems = allItems.filter((x) => x.name === name);
   console.log(foundItems);
   if (foundItems.length > 0) {
     alert(`${foundItems.name} found!`);
     return true;
   }
   return false;
-}
+};
 
-//___ADD NEW ITEM MODAL__
+//___ADD NEW ITEM MODAL SECTION__
 let myModal = new bootstrap.Modal(
   document.getElementById("exampleModal"),
   () => {}
 );
 
-// add new Item via dbl click
-paper.raphael.dblclick((e) => {
-  //   console.log(e.clientX);
-  
-  
+const createItemDblClick = (e) => {
   const name = "item";
   if (currentItemYPosition < 720) {
     allItems.push({
@@ -295,21 +293,20 @@ paper.raphael.dblclick((e) => {
   } else {
     alert("Hey no more room for tasks sorry.");
   }
-});
-
-
-
+};
+// add new Item via dbl click
+paper.raphael.dblclick(createItemDblClick);
 
 var createItemModal = document.getElementById("exampleModal");
 createItemModal.addEventListener("show.bs.modal", function (event) {
-  document.getElementById("taskname").value="";
+  document.getElementById("taskname").value = "";
   const warningText = document.getElementById("create-warning-text");
   warningText.innerHTML = "";
 });
 
-createItemModal.addEventListener('hidden.bs.modal', function (event) {
+createItemModal.addEventListener("hidden.bs.modal", function (event) {
   const name = document.getElementById("taskname");
-  if (name.value === "" || name.value == undefined || name.value===null) {
+  if (name.value === "" || name.value == undefined || name.value === null) {
     allItems.pop();
     saveItems();
     draw();
@@ -334,8 +331,6 @@ document
       const warningText = document.getElementById("create-warning-text");
       warningText.innerHTML = "name already exists. Try another one";
     }
-    
-    
   });
 
 // ADDITIONAL FUNCTIONALITY
@@ -358,8 +353,17 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// SIDE MENU
+// __OFF CANVAS MENU SECTION__
+const offCanvasMenu = document.getElementById("offcanvasScrolling");
+offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {});
 
+offCanvasMenu.addEventListener("hide.bs.offcanvas", function (event) {
+  paper.raphael.dblclick(() => {});
+});
+
+// ___SIDE MENU SECTION___
+
+// update the completed field
 const updateCompleted = (name, completed) => {
   const index = allItems.findIndex((x) => x.name === name);
   allItems[index].completed = completed;
@@ -371,6 +375,8 @@ const removeListChild = (name) => {
     item.remove();
   }
 };
+
+// add items to the side menu
 const addtoSideMenu = (name, checked) => {
   const parent = document.getElementById("checklist-container");
 
