@@ -217,7 +217,7 @@ const addItem = (
 
   //   edit name
 
-  const text = paper.text(x + 50, y + 10, name).attr({ fill: "#fff" });
+  const text = paper.text(x + 50, y + 10, name.substring(0,20)).attr({ fill: "#fff" });
   text.click(() => {
     //   alert("clicked");
     itemObjectName = name;
