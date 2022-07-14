@@ -15,10 +15,14 @@ const blue = "#04C4D9";
 const orange = "#F2B705";
 const gold = "#ffd700";
 
-const paper = Raphael(0, 0, horizSpacing * numberofHalfHours, innerHeight);
+const paper = Raphael(
+  0,
+  0,
+  horizSpacing * numberofHalfHours,
+  window.innerHeight
+);
 paper.canvas.style.backgroundColor = black;
 
-                
 // HELPERS
 //starts at 0 goes to max-1
 
@@ -33,6 +37,11 @@ const deleteAllItems = () => {
   allItems = [];
   currentItemYPosition = 0;
   saveItems();
+};
+
+const chooseRandomColor = () => {
+  const colors = [pink, green, blue];
+  return colors[randomIndex(colors.length)];
 };
 
 // const allItems = [
@@ -203,8 +212,8 @@ const addItem = (x, y, halfHours, name, color, width = 0) => {
     .circle(x + width - buttonSpacing * 2, y + 10, 6)
     .attr({ fill: "#fff" })
     .click(() => {
-      
       deleteItem(name);
+      removeListChild(name);
       draw();
     });
 
@@ -265,7 +274,7 @@ document
     myModal.hide();
     const newlyAddedItem = allItems[allItems.length - 1];
     newlyAddedItem.name = taskName;
-
+    addtoSideMenu(taskName);
     draw();
   });
 
@@ -289,10 +298,58 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+
+const removeListChild=(name)=>{
+  document.getElementById(`${name}-row`).remove();
+}
+// SIDE MENU
+const addtoSideMenu = (name) => {
+  const parent = document.getElementById("checklist-container");
+
+  const row = document.createElement("div");
+  row.classList.add("row");
+  row.setAttribute("id", `${name}-row`);
+  const col1 = document.createElement("div");
+  col1.classList.add("col");
+  const col2 = document.createElement("div");
+  col2.classList.add("col");
+  const p = document.createElement("p");
+  
+   
+  // checkbox
+  const checkbox = document.createElement("input");
+  checkbox.setAttribute("type", "checkbox");
+  checkbox.setAttribute("id", `${name}-checkbox`);
+  // checkbox.classList.add(`${name}-checkbox`);
+  //checkbox event listner
+  checkbox.addEventListener('change', function(e) {
+    
+    // alert(this.checked);
+    const name = e.target.id.replace("-checkbox","")
+    const item = allItems.find((x)=>x.name==name);
+    if(this.checked === true){
+      item.color = orange;
+    }else{
+      item.color = chooseRandomColor();
+    }
+    
+    draw();
+   });
+
+  // attach
+  p.innerHTML = name;
+  col1.appendChild(checkbox);
+  col2.appendChild(p);
+  row.appendChild(col1);
+  row.appendChild(col2);
+  parent.appendChild(row);
+};
+
 const main = () => {
   saveItems();
   draw();
   for (let i = 0; i < allItems.length; i++) {
+    addtoSideMenu(allItems[i].name);
     currentItemYPosition += vertSpacing;
   }
 };

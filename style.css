@@ -12,10 +12,18 @@ svg{
     
 }
 
-
-#delete-all{
+#menu-button{
     position: fixed;
     right: 5px;
-    margin:10px;
+    margin: 10px;
     bottom: 50px;
+    width:50px;
+    height:50px;
+    padding:0px !important;
+    
+    
 }
+
+/* #delete-all{
+    
+} */

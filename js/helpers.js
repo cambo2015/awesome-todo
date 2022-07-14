@@ -2,10 +2,7 @@ const randomIndex = (max) => {
   return Math.floor(Math.random() * max);
 };
 
-const chooseRandomColor = () => {
-  const colors = [pink, green, blue, orange];
-  return colors[randomIndex(colors.length)];
-};
+
 
 const findTimeLocation = (time) => {
   const times = [
