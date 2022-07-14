@@ -33,7 +33,31 @@
         </div>
     </nav> -->
 
+    <!-- off canvas -->
+    <button class="btn btn-secondary rounded-circle" id="menu-button" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
+            class="fa-solid fa-bars text-center"></i></button>
 
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Task List</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="container" id="checklist-container">
+                <div class="row">
+                    <div class="col border-bottom  p-2">Completed</div>
+                    <div class="col border-bottom  p-2">Task name</div>
+                </div>
+            </div>
+            <button class="btn btn-danger mt-3" id="delete-all"><i
+                    class="fa-solid fa-trash-can-slash bg-white"></i>Delete
+                all</button>
+        </div>
+    </div>
 
 
     <!-- Modal -->
@@ -43,7 +67,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button id="close-create-item" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -64,7 +89,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="edit-task-name-modal-label">Edit Task Name</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -78,35 +103,19 @@
             </div>
         </div>
     </div>
-    <!-- off canvas -->
-    <button class="btn btn-secondary rounded-circle " id="menu-button" type="button" data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
-            class="fa-solid fa-bars text-center"></i></button>
 
 
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-        id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-        <div class="offcanvas-header">
-            
-            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">TaskList</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="container" id="checklist-container">
-            
-            </div>
-            <button class="btn btn-danger float-right " id="delete-all"><i
-                    class="fa-solid fa-trash-can-slash"></i>Delete
-                all</button>
-        </div>
-    </div>
 
-    </div>
+
+
+
+
+
 
 
     <script src="./raphael-2.3.0/raphael.min.js"></script>
     <!-- <script src="./js/globals.js" ></script> -->
-    <script src="./js/helpers.js" ></script>
+    <script src="./js/helpers.js"></script>
     <script src="./js/index.js" type="module"></script>
     <!-- MDB -->
 

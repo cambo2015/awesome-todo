@@ -121,7 +121,15 @@ const drawCurrentTimePinkLine = () => {
 const drawAllItems = () => {
   for (let i = 0; i < allItems.length; i++) {
     const item = allItems[i];
-    addItem(item.x, item.y, item.halfHours, item.name, item.color, item.width);
+    addItem(
+      item.x,
+      item.y,
+      item.halfHours,
+      item.name,
+      item.color,
+      item.width,
+      false
+    );
   }
 };
 
@@ -143,7 +151,7 @@ const arrageItems = () => {
   }
 };
 
-const updateItem = (name, newx, newy, width) => {
+const updateItem = (name, newx, newy, width, completed) => {
   if (newx < 0) {
     newx = 0;
   }
@@ -151,6 +159,8 @@ const updateItem = (name, newx, newy, width) => {
   allItems[index].x = newx;
   allItems[index].y = newy;
   allItems[index].width = width;
+
+  allItems.completed = completed;
   saveItems();
 };
 
@@ -186,7 +196,15 @@ document
     draw();
   });
 
-const addItem = (x, y, halfHours, name, color, width = 0) => {
+const addItem = (
+  x,
+  y,
+  halfHours,
+  name,
+  color,
+  width = 0,
+  completed = false
+) => {
   if (width === 0) {
     width = horizSpacing * halfHours;
   }
@@ -224,7 +242,7 @@ const addItem = (x, y, halfHours, name, color, width = 0) => {
     .attr({ stroke: black });
 
   makeLongerButton.drag((dx, dy, mouseX, mouseY, e) => {
-    updateItem(name, x, y, dx + width);
+    updateItem(name, x, y, dx + width, completed);
     draw();
   });
 
@@ -233,7 +251,7 @@ const addItem = (x, y, halfHours, name, color, width = 0) => {
 
     // this.attrs.x = mouseX;
     draw();
-    updateItem(name, x + dx, y, width);
+    updateItem(name, x + dx, y, width, completed);
   });
 };
 
@@ -246,21 +264,41 @@ let myModal = new bootstrap.Modal(
 // add new Item via dbl click
 paper.raphael.dblclick((e) => {
   //   console.log(e.clientX);
+  
+  
+  const name = "item";
   if (currentItemYPosition < 720) {
     allItems.push({
       x: e.clientX + window.scrollX,
       y: currentItemYPosition,
       halfHours: 1,
-      name: "item",
+      name,
       color: chooseRandomColor(),
     });
 
-    myModal.show();
     saveItems();
+    myModal.show();
     draw();
     currentItemYPosition += vertSpacing;
   } else {
     alert("Hey no more room for tasks sorry.");
+  }
+});
+
+
+
+
+var createItemModal = document.getElementById("exampleModal");
+createItemModal.addEventListener("show.bs.modal", function (event) {
+  document.getElementById("taskname").value="";
+});
+
+createItemModal.addEventListener('hidden.bs.modal', function (event) {
+  const name = document.getElementById("taskname");
+  if (name.value === "" || name.value == undefined || name.value===null) {
+    allItems.pop();
+    saveItems();
+    draw();
   }
 });
 
@@ -270,12 +308,15 @@ document
   .addEventListener("click", function (event) {
     event.preventDefault();
     // console.log(myModal);
-    const taskName = document.getElementById("taskname").value;
+    const taskName = document.getElementById("taskname");
     myModal.hide();
     const newlyAddedItem = allItems[allItems.length - 1];
-    newlyAddedItem.name = taskName;
-    addtoSideMenu(taskName);
+    newlyAddedItem.name = taskName.value;
+
+    addtoSideMenu(taskName.value);
     draw();
+    
+    
   });
 
 // delete all items/tasks
@@ -298,12 +339,20 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-
-const removeListChild=(name)=>{
-  document.getElementById(`${name}-row`).remove();
-}
 // SIDE MENU
-const addtoSideMenu = (name) => {
+
+const updateCompleted = (name, completed) => {
+  const index = allItems.findIndex((x) => x.name === name);
+  allItems[index].completed = completed;
+};
+
+const removeListChild = (name) => {
+  const item = document.getElementById(`${name}-row`);
+  if (item !== null) {
+    item.remove();
+  }
+};
+const addtoSideMenu = (name, checked) => {
   const parent = document.getElementById("checklist-container");
 
   const row = document.createElement("div");
@@ -311,30 +360,37 @@ const addtoSideMenu = (name) => {
   row.setAttribute("id", `${name}-row`);
   const col1 = document.createElement("div");
   col1.classList.add("col");
+  col1.classList.add("border-bottom");
+
   const col2 = document.createElement("div");
   col2.classList.add("col");
+  col2.classList.add("border-bottom");
   const p = document.createElement("p");
-  
-   
+
   // checkbox
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
   checkbox.setAttribute("id", `${name}-checkbox`);
+  checkbox.checked = checked;
+
   // checkbox.classList.add(`${name}-checkbox`);
   //checkbox event listner
-  checkbox.addEventListener('change', function(e) {
-    
+  checkbox.addEventListener("change", function (e) {
     // alert(this.checked);
-    const name = e.target.id.replace("-checkbox","")
-    const item = allItems.find((x)=>x.name==name);
-    if(this.checked === true){
+    const name = e.target.id.replace("-checkbox", "");
+    const item = allItems.find((x) => x.name == name);
+
+    if (this.checked === true) {
       item.color = orange;
-    }else{
+      updateCompleted(name, this.checked);
+      saveItems();
+    } else {
       item.color = chooseRandomColor();
+      updateCompleted(name, this.checked);
+      saveItems();
     }
-    
     draw();
-   });
+  });
 
   // attach
   p.innerHTML = name;
@@ -349,7 +405,9 @@ const main = () => {
   saveItems();
   draw();
   for (let i = 0; i < allItems.length; i++) {
-    addtoSideMenu(allItems[i].name);
+    const item = allItems[i];
+
+    addtoSideMenu(item.name, item.completed);
     currentItemYPosition += vertSpacing;
   }
 };

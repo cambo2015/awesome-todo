@@ -9,7 +9,7 @@ body{
 
 svg{
     position:static !important;
-    
+    overflow: visible !important;
 }
 
 #menu-button{
@@ -20,8 +20,6 @@ svg{
     width:50px;
     height:50px;
     padding:0px !important;
-    
-    
 }
 
 /* #delete-all{
