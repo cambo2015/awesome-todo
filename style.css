@@ -28,6 +28,10 @@ svg{
     left:-20px;
 }
 
+.hand-pointer{
+    cursor: pointer;
+}
+
 /* #delete-all{
     
 } */

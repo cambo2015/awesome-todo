@@ -6,6 +6,7 @@ const numberofHalfHours = 37;
 const maxNumOfTasks = 30;
 
 let currentItemYPosition = 0;
+let menuIsOpen = false;
 // colors
 const black = "#000";
 const white = "#fff";
@@ -44,28 +45,65 @@ const chooseRandomColor = () => {
   return colors[randomIndex(colors.length)];
 };
 
-// const allItems = [
-//   { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
-//   { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
-//   { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
-//   { x: 600, y: vertSpacing * 3, halfHours: 1, name: "Eat Dinner", color: pink },
-//   { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
-//   { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
-//   { x: , y: vertSpacing * 6, halfHours: 1, name: "study 3", color: orange },
-//   { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
-// ];
+const enterFullScreen = () => {
+  var element = document.querySelector("body");
+
+  // make the element go to full-screen mode
+  element
+    .requestFullscreen()
+    .then(function () {
+      // element has entered fullscreen mode successfully
+      alert("success");
+    })
+    .catch(function (error) {
+      // element could not enter fullscreen mode
+      alert(error);
+      console.log(error);
+    });
+};
+
+// const
 let allItems = loadItems() ?? [];
 let oldItems = [];
 
+/**
+ * 
+ * allItems = [
+    { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
+    { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
+    { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
+    {
+      x: 600,
+      y: vertSpacing * 3,
+      halfHours: 1,
+      name: "Eat Dinner",
+      color: pink,
+    },
+    { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
+    { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
+    {
+      x: 900,
+      y: vertSpacing * 6,
+      halfHours: 1,
+      name: "study 3",
+      color: orange,
+    },
+    { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
+  ];
+ */
+
 const drawBottomLines = () => {
   let timeCounter = 6; //start time will start at 6:30
-
+  let timeOfDay = "am";
   // draw bottom lines with hours
   for (let i = 0; i < numberofHalfHours; i++) {
     const c = paper.rect(horizSpacing * i, window.innerHeight - 20, 3, 20);
     c.attr("fill", pink);
     let time = timeCounter.toString();
-    if (i == 13) {
+    if (i === 12) {
+      timeOfDay = "pm";
+    }
+    if (i === 13) {
       timeCounter = 0;
     }
     if (i % 2 === 1) {
@@ -73,7 +111,11 @@ const drawBottomLines = () => {
       timeCounter++;
     }
     paper
-      .text(horizSpacing * i + 2, window.innerHeight - 27, time.toString())
+      .text(
+        horizSpacing * i + 2,
+        window.innerHeight - 27,
+        time.toString() + timeOfDay
+      )
       .attr({ fill: white });
   }
 };
@@ -225,17 +267,25 @@ const addItem = (
     itemObjectName = name;
     editTaskModal.show();
   });
+  text.node.setAttribute("class", "hand-pointer");
 
   //   BUTTONS
   // delete button
-  paper
-    .circle(x + width - buttonSpacing * 2, y + 10, 6)
+  const trashButton = paper
+    .image(
+      "../img/trash-solid.png",
+      x + width - buttonSpacing * 2 - 5,
+      y + 3,
+      12,
+      12
+    )
     .attr({ fill: "#fff" })
     .click(() => {
       deleteItem(name);
       removeListChild(name);
       draw();
     });
+  trashButton.node.setAttribute("class", "hand-pointer");
 
   // make longer button
   const makeLongerButton = paper
@@ -247,6 +297,7 @@ const addItem = (
     updateItem(name, x, y, dx + width, completed);
     draw();
   });
+  makeLongerButton.node.setAttribute("class", "hand-pointer");
 
   rect.drag(function (dx, dy, mouseX, mouseY, e) {
     // console.log(e.targetTouches[0].clientX);
@@ -276,22 +327,25 @@ let myModal = new bootstrap.Modal(
 );
 
 const createItemDblClick = (e) => {
-  const name = "item";
-  if (currentItemYPosition < 720) {
-    allItems.push({
-      x: e.clientX + window.scrollX,
-      y: currentItemYPosition,
-      halfHours: 1,
-      name,
-      color: chooseRandomColor(),
-    });
+  if (menuIsOpen === false) {
+    const name = "item";
+    if (currentItemYPosition < window.innerHeight - 50) {
+      //change this to window.height - some value
+      allItems.push({
+        x: e.clientX + window.scrollX,
+        y: currentItemYPosition,
+        halfHours: 1,
+        name,
+        color: chooseRandomColor(),
+      });
 
-    saveItems();
-    myModal.show();
-    draw();
-    currentItemYPosition += vertSpacing;
-  } else {
-    alert("Hey no more room for tasks sorry.");
+      saveItems();
+      myModal.show();
+      draw();
+      currentItemYPosition += vertSpacing;
+    } else {
+      alert("Hey no more room for tasks sorry.");
+    }
   }
 };
 // add new Item via dbl click
@@ -308,6 +362,7 @@ createItemModal.addEventListener("hidden.bs.modal", function (event) {
   const name = document.getElementById("taskname");
   if (name.value === "" || name.value == undefined || name.value === null) {
     allItems.pop();
+    currentItemYPosition -= vertSpacing;
     saveItems();
     draw();
   }
@@ -355,10 +410,12 @@ document.addEventListener("keydown", (event) => {
 
 // __OFF CANVAS MENU SECTION__
 const offCanvasMenu = document.getElementById("offcanvasScrolling");
-offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {});
+offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {
+  menuIsOpen = true;
+});
 
 offCanvasMenu.addEventListener("hide.bs.offcanvas", function (event) {
-  paper.raphael.dblclick(() => {});
+  menuIsOpen = false;
 });
 
 // ___SIDE MENU SECTION___
@@ -425,6 +482,10 @@ const addtoSideMenu = (name, checked) => {
   row.appendChild(col2);
   parent.appendChild(row);
 };
+
+addEventListener("resize", (event) => {
+  draw();
+});
 
 const main = () => {
   saveItems();
