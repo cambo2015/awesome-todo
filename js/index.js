@@ -23,7 +23,7 @@ const gold = "#ffd700";
 //   window.innerHeight
 // );
 const paper = Snap(horizSpacing * numberofHalfHours, window.innerHeight);
-console.log(paper);
+
 // paper.canvas.style.backgroundColor = black;
 
 // HELPERS
@@ -264,14 +264,14 @@ const addItem = (
   //   edit name
 
   const text = paper
-    .text(x+3 , y + 13, name.substring(0, 20))
+    .text(x + 3, y + 13, name.substring(0, 20))
     .attr({ fill: "#fff" })
-    .attr({"font-size":10});
-    text.click(() => {
-      itemObjectName = name;
-      editTaskModal.show();
-    });
-    text.node.setAttribute("class", "hand-pointer");
+    .attr({ "font-size": 10 });
+  text.click(() => {
+    itemObjectName = name;
+    editTaskModal.show();
+  });
+  text.node.setAttribute("class", "hand-pointer");
 
   //   BUTTONS
   // delete button
@@ -300,6 +300,16 @@ const addItem = (
   makeLongerButton.drag((dx, dy, mouseX, mouseY, e) => {
     updateItem(name, x, y, dx + width, completed);
     draw();
+  });
+
+  makeLongerButton.touchmove((e) => {
+    // console.log(e);
+    const touchX = e.touches[0].clientX;
+    // console.log(touchX);
+    const dx = touchX - x;
+    console.log("dx", dx, "width", width);
+    const newWidth = dx + width;
+    updateItem(name, x, y, newWidth, completed);
   });
   makeLongerButton.node.setAttribute("class", "hand-pointer");
 
@@ -355,7 +365,7 @@ const createItemDblClick = (e) => {
 // add new Item via dbl click
 // paper.raphael.dblclick(createItemDblClick);
 const svg = document.getElementsByTagName("svg")[0];
-svg.addEventListener("dblclick",createItemDblClick);
+svg.addEventListener("dblclick", createItemDblClick);
 
 var createItemModal = document.getElementById("exampleModal");
 createItemModal.addEventListener("show.bs.modal", function (event) {
@@ -498,28 +508,28 @@ addEventListener("resize", (event) => {
 const tutorial = () => {};
 
 const main = () => {
-  allItems = [
-    { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
-    { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
-    { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
-    {
-      x: 600,
-      y: vertSpacing * 3,
-      halfHours: 1,
-      name: "Eat Dinner",
-      color: pink,
-    },
-    { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
-    { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
-    {
-      x: 900,
-      y: vertSpacing * 6,
-      halfHours: 1,
-      name: "study 3",
-      color: orange,
-    },
-    { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
-  ];
+  // allItems = [
+  //   { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
+  //   { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
+  //   { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
+  //   {
+  //     x: 600,
+  //     y: vertSpacing * 3,
+  //     halfHours: 1,
+  //     name: "Eat Dinner",
+  //     color: pink,
+  //   },
+  //   { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
+  //   { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
+  //   {
+  //     x: 900,
+  //     y: vertSpacing * 6,
+  //     halfHours: 1,
+  //     name: "study 3",
+  //     color: orange,
+  //   },
+  //   { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
+  // ];
 
   saveItems();
   draw();
