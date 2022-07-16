@@ -540,7 +540,7 @@ const main = () => {
     currentItemYPosition += vertSpacing;
   }
 
-  tutorial();
+  // tutorial();
 };
 
 main();
