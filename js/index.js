@@ -16,13 +16,15 @@ const blue = "#04C4D9";
 const orange = "#F2B705";
 const gold = "#ffd700";
 
-const paper = Raphael(
-  0,
-  0,
-  horizSpacing * numberofHalfHours,
-  window.innerHeight
-);
-paper.canvas.style.backgroundColor = black;
+// const paper = Raphael(
+//   0,
+//   0,
+//   horizSpacing * numberofHalfHours,
+//   window.innerHeight
+// );
+const paper = Snap(horizSpacing * numberofHalfHours, window.innerHeight);
+console.log(paper);
+// paper.canvas.style.backgroundColor = black;
 
 // HELPERS
 //starts at 0 goes to max-1
@@ -116,7 +118,8 @@ const drawBottomLines = () => {
         window.innerHeight - 27,
         time.toString() + timeOfDay
       )
-      .attr({ fill: white });
+      .attr({ fill: white })
+      .attr({ "font-size": 12 });
   }
 };
 
@@ -255,20 +258,20 @@ const addItem = (
   name = name.toString();
   const rect = paper.rect(x, y, width, height, 5);
   rect.attr("fill", color);
-  rect.node.setAttribute("id",`${name.toLowerCase().replace(" ","-")}-rect`);
+  rect.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-rect`);
   //   add sound
 
   //   edit name
 
   const text = paper
-    .text(x + 50, y + 10, name.substring(0, 20))
-    .attr({ fill: "#fff" });
-  text.click(() => {
-    //   alert("clicked");
-    itemObjectName = name;
-    editTaskModal.show();
-  });
-  text.node.setAttribute("class", "hand-pointer");
+    .text(x+3 , y + 13, name.substring(0, 20))
+    .attr({ fill: "#fff" })
+    .attr({"font-size":10});
+    text.click(() => {
+      itemObjectName = name;
+      editTaskModal.show();
+    });
+    text.node.setAttribute("class", "hand-pointer");
 
   //   BUTTONS
   // delete button
@@ -295,7 +298,6 @@ const addItem = (
     .attr({ stroke: black });
 
   makeLongerButton.drag((dx, dy, mouseX, mouseY, e) => {
-    
     updateItem(name, x, y, dx + width, completed);
     draw();
   });
@@ -351,7 +353,9 @@ const createItemDblClick = (e) => {
   }
 };
 // add new Item via dbl click
-paper.raphael.dblclick(createItemDblClick);
+// paper.raphael.dblclick(createItemDblClick);
+const svg = document.getElementsByTagName("svg")[0];
+svg.addEventListener("dblclick",createItemDblClick);
 
 var createItemModal = document.getElementById("exampleModal");
 createItemModal.addEventListener("show.bs.modal", function (event) {
@@ -489,49 +493,34 @@ addEventListener("resize", (event) => {
   draw();
 });
 
-
 // TUTORIAL SECTION
 
-const tutorial =()=>{
-  const driver = new Driver({
-    allowClose: false,
-  });
-
-  driver.highlight({
-    element: "#eat-breakfast-rect",
-    popover: {
-      title: "<em>An italicized title</em>",
-      description: "Description may also contain <strong>HTML</strong>",
-    },
-  });
-  
-}
+const tutorial = () => {};
 
 const main = () => {
-  
- allItems = [
-   { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
-   { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
-   { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
-   {
-     x: 600,
-     y: vertSpacing * 3,
-     halfHours: 1,
-     name: "Eat Dinner",
-     color: pink,
-   },
-   { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
-   { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
-   {
-     x: 900,
-     y: vertSpacing * 6,
-     halfHours: 1,
-     name: "study 3",
-     color: orange,
-   },
-   { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
- ];
-  
+  allItems = [
+    { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
+    { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
+    { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
+    {
+      x: 600,
+      y: vertSpacing * 3,
+      halfHours: 1,
+      name: "Eat Dinner",
+      color: pink,
+    },
+    { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
+    { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
+    {
+      x: 900,
+      y: vertSpacing * 6,
+      halfHours: 1,
+      name: "study 3",
+      color: orange,
+    },
+    { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
+  ];
+
   saveItems();
   draw();
   for (let i = 0; i < allItems.length; i++) {
