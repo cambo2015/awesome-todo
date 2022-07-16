@@ -255,6 +255,7 @@ const addItem = (
   name = name.toString();
   const rect = paper.rect(x, y, width, height, 5);
   rect.attr("fill", color);
+  rect.node.setAttribute("id",`${name.toLowerCase().replace(" ","-")}-rect`);
   //   add sound
 
   //   edit name
@@ -294,6 +295,7 @@ const addItem = (
     .attr({ stroke: black });
 
   makeLongerButton.drag((dx, dy, mouseX, mouseY, e) => {
+    
     updateItem(name, x, y, dx + width, completed);
     draw();
   });
@@ -487,7 +489,49 @@ addEventListener("resize", (event) => {
   draw();
 });
 
+
+// TUTORIAL SECTION
+
+const tutorial =()=>{
+  const driver = new Driver({
+    allowClose: false,
+  });
+
+  driver.highlight({
+    element: "#eat-breakfast-rect",
+    popover: {
+      title: "<em>An italicized title</em>",
+      description: "Description may also contain <strong>HTML</strong>",
+    },
+  });
+  
+}
+
 const main = () => {
+  
+ allItems = [
+   { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
+   { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
+   { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
+   {
+     x: 600,
+     y: vertSpacing * 3,
+     halfHours: 1,
+     name: "Eat Dinner",
+     color: pink,
+   },
+   { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
+   { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
+   {
+     x: 900,
+     y: vertSpacing * 6,
+     halfHours: 1,
+     name: "study 3",
+     color: orange,
+   },
+   { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
+ ];
+  
   saveItems();
   draw();
   for (let i = 0; i < allItems.length; i++) {
@@ -496,6 +540,8 @@ const main = () => {
     addtoSideMenu(item.name, item.completed);
     currentItemYPosition += vertSpacing;
   }
+
+  tutorial();
 };
 
 main();
