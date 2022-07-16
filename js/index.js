@@ -539,6 +539,7 @@ const main = () => {
     addtoSideMenu(item.name, item.completed);
     currentItemYPosition += vertSpacing;
   }
+  alert("Double click anywhere on the screen to get started");
 
   // tutorial();
 };
