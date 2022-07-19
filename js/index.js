@@ -476,7 +476,6 @@ const offcanvas = new bootstrap.Offcanvas(
   document.getElementById("offcanvasScrolling")
 );
 
-
 const offCanvasMenu = document.getElementById("offcanvasScrolling");
 offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {
   menuIsOpen = true;
@@ -559,11 +558,11 @@ addEventListener("resize", (event) => {
 });
 
 // TUTORIAL SECTION
-
+let currentTourPosition = 1;
 const tutorial = () => {
   const introjObj = introJs().setOptions({
     steps: [
-      { intro: "Here is a small tutorial on how to use Killer Todo..." },
+      { intro: "Here is a tutorial on how to use Killer Todo..." },
       {
         element: document.querySelector("#eat-breakfast-rect"),
         intro: "<p>Here is a todo item.</p>",
@@ -581,8 +580,7 @@ const tutorial = () => {
       },
       {
         element: document.querySelector("#menu-button"),
-        intro:
-          "<p>Here is the menu button. Go ahead and click it to open the menu.</p>",
+        intro: "<p>Here is the menu button.</p>",
         position: "left",
       },
       {
@@ -611,13 +609,22 @@ const tutorial = () => {
   });
 
   introjObj.start();
-  introjObj.oncomplete(() => { //delete the tutorial todo lists when done.
+  introjObj.onchange(() => {
+    currentTourPosition++;
+    console.log(`current tour position : ${currentTourPosition}`);
+    if (currentTourPosition === 5) {
+      offcanvas.show();
+    }
+  });
+  introjObj.oncomplete(() => {
+    //delete the tutorial todo lists when done.
     localStorage.setItem("tutorialRan", "true");
     allItems = [];
     saveItems();
     draw();
     currentItemYPosition = 0;
     offcanvas.hide();
+    currentTourPosition = 1;
   });
 };
 
