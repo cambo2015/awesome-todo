@@ -569,6 +569,9 @@ const tutorial = () => {
     })
     .start();
   localStorage.setItem("tutorialRan", "true");
+  allItems=[]
+  saveItems();
+  draw();
 };
 
 const main = () => {
