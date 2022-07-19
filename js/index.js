@@ -131,7 +131,7 @@ const drawGrid = () => {
       .attr({ stroke: "#111" })
       .attr({ fill: "#111" });
   }
-  for (let y = 0; y < vertSpacing; y++) {
+  for (let y = 0; y < window.innerHeight / vertSpacing - 1; y++) {
     const l = paper.rect(
       0,
       vertSpacing * y - yOffset,
