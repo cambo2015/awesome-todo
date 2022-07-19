@@ -606,6 +606,7 @@ const tutorial = () => {
         // position: "bottom",
       },
     ],
+    exitOnOverlayClick:false,
   });
 
   introjObj.start();
