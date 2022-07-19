@@ -608,7 +608,7 @@ const tutorial = () => {
 
   introjObj.start();
   introjObj.oncomplete(() => { //delete the tutorial todo lists when done.
-    // localStorage.setItem("tutorialRan", "true");
+    localStorage.setItem("tutorialRan", "true");
     allItems = [];
     saveItems();
     draw();
