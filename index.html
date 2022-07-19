@@ -21,7 +21,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.min.js"
         integrity="sha512-K+cPWcoDCr2JFFfe912LrvRUQbVJuWNfeWK5r/HrmpDs8ELrsjVib8Fs5oAxzu76fG66ajGhDLvvcxBbeEzl9g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        
+    <!-- intro.js -->
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
+    <link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet" />
+
 </head>
 
 
@@ -46,7 +50,7 @@
         <div class="offcanvas-header">
 
             <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Task List</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button id="close-menu-button" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <div class="container rounded-lg p-5" id="checklist-container">

@@ -16,6 +16,7 @@ const blue = "#04C4D9";
 const orange = "#F2B705";
 const gold = "#ffd700";
 
+
 // const paper = Raphael(
 //   0,
 //   0,
@@ -272,6 +273,7 @@ const addItem = (
     editTaskModal.show();
   });
   text.node.setAttribute("class", "hand-pointer");
+  
 
   //   BUTTONS
   // delete button
@@ -290,6 +292,7 @@ const addItem = (
       draw();
     });
   trashButton.node.setAttribute("class", "hand-pointer");
+  trashButton.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-trash`);
 
   // make longer button
   const makeLongerButton = paper
@@ -312,6 +315,7 @@ const addItem = (
     updateItem(name, x, y, newWidth, completed);
   });
   makeLongerButton.node.setAttribute("class", "hand-pointer");
+  makeLongerButton.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-stretcher`);
 
   rect.drag(function (dx, dy, mouseX, mouseY, e) {
     // console.log(e.targetTouches[0].clientX);
@@ -425,6 +429,8 @@ document.addEventListener("keydown", (event) => {
 });
 
 // __OFF CANVAS MENU SECTION__
+
+
 const offCanvasMenu = document.getElementById("offcanvasScrolling");
 offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {
   menuIsOpen = true;
@@ -468,7 +474,7 @@ const addtoSideMenu = (name, checked) => {
   // checkbox
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
-  checkbox.setAttribute("id", `${name}-checkbox`);
+  checkbox.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-checkbox`);
   checkbox.checked = checked;
 
   // checkbox.classList.add(`${name}-checkbox`);
@@ -505,7 +511,58 @@ addEventListener("resize", (event) => {
 
 // TUTORIAL SECTION
 
-const tutorial = () => {};
+const tutorial = () => {
+  
+  introJs()
+    .setOptions({
+      steps: [
+        { intro: "Here is a small tutorial on how to use Killer Todo..." },
+        {
+          element: document.querySelector("#eat-breakfast-rect"),
+          intro: "<p>Here is a todo item.</p>",
+          position: "top",
+        },
+        {
+          element: document.querySelector("#eat-breakfast-trash"),
+          intro: "<p>This trash icon will delete a todo item.</p>",
+          position: "bottom",
+        },
+        {
+          element: document.querySelector("#eat-breakfast-stretcher"),
+          intro: "<p>This will stretch out your task to make it longer.</p>",
+          position: "top",
+        },
+        {
+          element: document.querySelector("#menu-button"),
+          intro: "<p>Here is the menu button. Go ahead and click it to open the menu.</p>",
+          position: "left",
+        },
+        {
+          element: document.querySelector("#eat-breakfast-checkbox"),
+          intro:
+            "<p>Checking this will mark the task as done. A completed task will turn orange.</p>",
+          position: "bottom",
+        },
+        {
+          element: document.querySelector("#delete-all"),
+          intro: "<p>This will delete all your todo items.</p>",
+          position: "bottom",
+        },
+        {
+          element: document.querySelector("#close-menu-button"),
+          intro: "<p>This will close the menu.</p>",
+          position: "bottom",
+        },
+        {
+          element: document.querySelector("#body"),
+          intro: "<p>Double clicking anywhere on the screen will create a new todo item. Please close the menu when this tutorial is finished.</p>",
+          // position: "bottom",
+        },
+      ],
+    })
+    .start();
+    // localStorage.setItem("tutorialRan", "true");
+};
 
 const main = () => {
   // allItems = [
@@ -532,30 +589,23 @@ const main = () => {
   // ];
 
   saveItems();
+
   draw();
+  
   for (let i = 0; i < allItems.length; i++) {
     const item = allItems[i];
-
     addtoSideMenu(item.name, item.completed);
     currentItemYPosition += vertSpacing;
   }
-  alert("Double click anywhere on the screen to get started");
+  // alert("Double click anywhere on the screen to get started");
 
-  // tutorial();
+  
+  const tutorialRan = JSON.parse(localStorage.getItem("tutorialRan"));
+  // alert();
+  if(tutorialRan === false || tutorialRan === undefined || tutorialRan === null){
+    tutorial(); 
+  }
+  
 };
 
 main();
-
-// addItem(0, 0, 5, "Eat Breakfast");
-// addItem(200, vertSpacing, 1, "TEst");
-// addItem(400, vertSpacing * 2, 1, "TEst");
-
-// const rect=paper.rect(0,0,horizSpacing*2,20,5);
-// rect.attr("fill", "#000");
-// paper.text(0+50,10,"Eat Breakfast").attr({fill:"#fff"});
-
-// var circle = paper.circle(50, 40, 10);
-// // Sets the fill attribute of the circle to red (#f00)
-// circle.attr("fill", "#f00");
-// // Sets the stroke attribute of the circle to white
-// circle.attr("stroke", "#fff");

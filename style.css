@@ -22,11 +22,11 @@ svg{
     padding:0px !important;
 }
 
-#pin-img{
+/* #pin-img{
     position:relative;
     top:-20px;
     left:-20px;
-}
+} */
 
 .hand-pointer{
     cursor: pointer;
