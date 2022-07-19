@@ -67,6 +67,45 @@ const enterFullScreen = () => {
 // const
 let allItems = loadItems() ?? [];
 let oldItems = [];
+const tutorialItems = [
+  { x: 0, y: 0, halfHours: 1, name: "Eat Breakfast", color: green },
+  { x: 100, y: vertSpacing, halfHours: 3, name: "Study Math", color: blue },
+  {
+    x: 400,
+    y: vertSpacing * 2,
+    halfHours: 2,
+    name: "Take a Math Test",
+    color: pink,
+  },
+  {
+    x: 600,
+    y: vertSpacing * 3,
+    halfHours: 1,
+    name: "Study Science",
+    color: pink,
+  },
+  {
+    x: 700,
+    y: vertSpacing * 4,
+    halfHours: 1,
+    name: "Break",
+    color: green,
+  },
+  {
+    x: 800,
+    y: vertSpacing * 5,
+    halfHours: 1,
+    name: "Study CS",
+    color: blue,
+  },
+  {
+    x: 900,
+    y: vertSpacing * 6,
+    halfHours: 6,
+    name: "Work",
+    color: pink,
+  },
+];
 
 /**
  * 
@@ -518,60 +557,63 @@ addEventListener("resize", (event) => {
 // TUTORIAL SECTION
 
 const tutorial = () => {
-  introJs()
-    .setOptions({
-      steps: [
-        { intro: "Here is a small tutorial on how to use Killer Todo..." },
-        {
-          element: document.querySelector("#eat-breakfast-rect"),
-          intro: "<p>Here is a todo item.</p>",
-          position: "top",
-        },
-        {
-          element: document.querySelector("#eat-breakfast-trash"),
-          intro: "<p>This trash icon will delete a todo item.</p>",
-          position: "bottom",
-        },
-        {
-          element: document.querySelector("#eat-breakfast-stretcher"),
-          intro: "<p>This will stretch out your task to make it longer.</p>",
-          position: "top",
-        },
-        {
-          element: document.querySelector("#menu-button"),
-          intro:
-            "<p>Here is the menu button. Go ahead and click it to open the menu.</p>",
-          position: "left",
-        },
-        {
-          element: document.querySelector("#eat-breakfast-checkbox"),
-          intro:
-            "<p>Checking this will mark the task as done. A completed task will turn orange.</p>",
-          position: "bottom",
-        },
-        {
-          element: document.querySelector("#delete-all"),
-          intro: "<p>This will delete all your todo items.</p>",
-          position: "bottom",
-        },
-        {
-          element: document.querySelector("#close-menu-button"),
-          intro: "<p>This will close the menu.</p>",
-          position: "bottom",
-        },
-        {
-          element: document.querySelector("#body"),
-          intro:
-            "<p>Double clicking anywhere on the screen will create a new todo item. Please close the menu when this tutorial is finished.</p>",
-          // position: "bottom",
-        },
-      ],
-    })
-    .start();
-  localStorage.setItem("tutorialRan", "true");
-  allItems=[]
-  saveItems();
-  draw();
+  const introjObj = introJs().setOptions({
+    steps: [
+      { intro: "Here is a small tutorial on how to use Killer Todo..." },
+      {
+        element: document.querySelector("#eat-breakfast-rect"),
+        intro: "<p>Here is a todo item.</p>",
+        position: "top",
+      },
+      {
+        element: document.querySelector("#eat-breakfast-trash"),
+        intro: "<p>This trash icon will delete a todo item.</p>",
+        position: "bottom",
+      },
+      {
+        element: document.querySelector("#eat-breakfast-stretcher"),
+        intro: "<p>This will stretch out your task to make it longer.</p>",
+        position: "top",
+      },
+      {
+        element: document.querySelector("#menu-button"),
+        intro:
+          "<p>Here is the menu button. Go ahead and click it to open the menu.</p>",
+        position: "left",
+      },
+      {
+        element: document.querySelector("#eat-breakfast-checkbox"),
+        intro:
+          "<p>Checking this will mark the task as done. A completed task will turn orange.</p>",
+        position: "bottom",
+      },
+      {
+        element: document.querySelector("#delete-all"),
+        intro: "<p>This will delete all your todo items.</p>",
+        position: "bottom",
+      },
+      {
+        element: document.querySelector("#close-menu-button"),
+        intro: "<p>This will close the menu.</p>",
+        position: "bottom",
+      },
+      {
+        element: document.querySelector("#body"),
+        intro:
+          "<p>Double clicking anywhere on the screen will create a new todo item. Please close the menu when this tutorial is finished.</p>",
+        // position: "bottom",
+      },
+    ],
+  });
+
+  introjObj.start();
+  introjObj.oncomplete(() => { //delete the tutorial todo lists when done.
+    // localStorage.setItem("tutorialRan", "true");
+    allItems = [];
+    saveItems();
+    draw();
+    currentItemYPosition = 0;
+  });
 };
 
 const main = () => {
@@ -581,44 +623,12 @@ const main = () => {
     tutorialRan === undefined ||
     tutorialRan === null
   ) {
-    allItems = [
-      { x: 0, y: 0, halfHours: 1, name: "Eat Breakfast", color: green },
-      { x: 100, y: vertSpacing, halfHours: 3, name: "Study Math", color: blue },
-      { x: 400, y: vertSpacing * 2, halfHours: 2, name: "Take a Math Test", color: pink },
-      {
-        x: 600,
-        y: vertSpacing * 3,
-        halfHours: 1,
-        name: "Study Science",
-        color: pink,
-      },
-      {
-        x: 700,
-        y: vertSpacing * 4,
-        halfHours: 1,
-        name: "Break",
-        color: green,
-      },
-      {
-        x: 800,
-        y: vertSpacing * 5,
-        halfHours: 1,
-        name: "Study CS",
-        color: blue,
-      },
-      {
-        x: 900,
-        y: vertSpacing * 6,
-        halfHours: 6,
-        name: "Work",
-        color: pink,
-      },
-    ];
+    allItems = [...tutorialItems];
   }
 
   saveItems();
-
   draw();
+  // console.log(allItems);
 
   for (let i = 0; i < allItems.length; i++) {
     const item = allItems[i];
