@@ -16,7 +16,6 @@ const blue = "#04C4D9";
 const orange = "#F2B705";
 const gold = "#ffd700";
 
-
 // const paper = Raphael(
 //   0,
 //   0,
@@ -273,7 +272,6 @@ const addItem = (
     editTaskModal.show();
   });
   text.node.setAttribute("class", "hand-pointer");
-  
 
   //   BUTTONS
   // delete button
@@ -292,7 +290,10 @@ const addItem = (
       draw();
     });
   trashButton.node.setAttribute("class", "hand-pointer");
-  trashButton.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-trash`);
+  trashButton.node.setAttribute(
+    "id",
+    `${name.toLowerCase().replace(" ", "-")}-trash`
+  );
 
   // make longer button
   const makeLongerButton = paper
@@ -315,7 +316,10 @@ const addItem = (
     updateItem(name, x, y, newWidth, completed);
   });
   makeLongerButton.node.setAttribute("class", "hand-pointer");
-  makeLongerButton.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-stretcher`);
+  makeLongerButton.node.setAttribute(
+    "id",
+    `${name.toLowerCase().replace(" ", "-")}-stretcher`
+  );
 
   rect.drag(function (dx, dy, mouseX, mouseY, e) {
     // console.log(e.targetTouches[0].clientX);
@@ -430,7 +434,6 @@ document.addEventListener("keydown", (event) => {
 
 // __OFF CANVAS MENU SECTION__
 
-
 const offCanvasMenu = document.getElementById("offcanvasScrolling");
 offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {
   menuIsOpen = true;
@@ -474,7 +477,10 @@ const addtoSideMenu = (name, checked) => {
   // checkbox
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
-  checkbox.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-checkbox`);
+  checkbox.setAttribute(
+    "id",
+    `${name.toLowerCase().replace(" ", "-")}-checkbox`
+  );
   checkbox.checked = checked;
 
   // checkbox.classList.add(`${name}-checkbox`);
@@ -512,7 +518,6 @@ addEventListener("resize", (event) => {
 // TUTORIAL SECTION
 
 const tutorial = () => {
-  
   introJs()
     .setOptions({
       steps: [
@@ -534,7 +539,8 @@ const tutorial = () => {
         },
         {
           element: document.querySelector("#menu-button"),
-          intro: "<p>Here is the menu button. Go ahead and click it to open the menu.</p>",
+          intro:
+            "<p>Here is the menu button. Go ahead and click it to open the menu.</p>",
           position: "left",
         },
         {
@@ -555,43 +561,62 @@ const tutorial = () => {
         },
         {
           element: document.querySelector("#body"),
-          intro: "<p>Double clicking anywhere on the screen will create a new todo item. Please close the menu when this tutorial is finished.</p>",
+          intro:
+            "<p>Double clicking anywhere on the screen will create a new todo item. Please close the menu when this tutorial is finished.</p>",
           // position: "bottom",
         },
       ],
     })
     .start();
-    // localStorage.setItem("tutorialRan", "true");
+  localStorage.setItem("tutorialRan", "true");
 };
 
 const main = () => {
-  // allItems = [
-  //   { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
-  //   { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
-  //   { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
-  //   {
-  //     x: 600,
-  //     y: vertSpacing * 3,
-  //     halfHours: 1,
-  //     name: "Eat Dinner",
-  //     color: pink,
-  //   },
-  //   { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
-  //   { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
-  //   {
-  //     x: 900,
-  //     y: vertSpacing * 6,
-  //     halfHours: 1,
-  //     name: "study 3",
-  //     color: orange,
-  //   },
-  //   { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
-  // ];
+  const tutorialRan = JSON.parse(localStorage.getItem("tutorialRan"));
+  if (
+    tutorialRan === false ||
+    tutorialRan === undefined ||
+    tutorialRan === null
+  ) {
+    allItems = [
+      { x: 0, y: 0, halfHours: 1, name: "Eat Breakfast", color: green },
+      { x: 100, y: vertSpacing, halfHours: 3, name: "Study Math", color: blue },
+      { x: 400, y: vertSpacing * 2, halfHours: 2, name: "Take a Math Test", color: pink },
+      {
+        x: 600,
+        y: vertSpacing * 3,
+        halfHours: 1,
+        name: "Study Science",
+        color: pink,
+      },
+      {
+        x: 700,
+        y: vertSpacing * 4,
+        halfHours: 1,
+        name: "Break",
+        color: green,
+      },
+      {
+        x: 800,
+        y: vertSpacing * 5,
+        halfHours: 1,
+        name: "Study CS",
+        color: blue,
+      },
+      {
+        x: 900,
+        y: vertSpacing * 6,
+        halfHours: 6,
+        name: "Work",
+        color: pink,
+      },
+    ];
+  }
 
   saveItems();
 
   draw();
-  
+
   for (let i = 0; i < allItems.length; i++) {
     const item = allItems[i];
     addtoSideMenu(item.name, item.completed);
@@ -599,13 +624,14 @@ const main = () => {
   }
   // alert("Double click anywhere on the screen to get started");
 
-  
-  const tutorialRan = JSON.parse(localStorage.getItem("tutorialRan"));
   // alert();
-  if(tutorialRan === false || tutorialRan === undefined || tutorialRan === null){
-    tutorial(); 
+  if (
+    tutorialRan === false ||
+    tutorialRan === undefined ||
+    tutorialRan === null
+  ) {
+    tutorial();
   }
-  
 };
 
 main();
