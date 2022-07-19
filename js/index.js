@@ -472,6 +472,10 @@ document.addEventListener("keydown", (event) => {
 });
 
 // __OFF CANVAS MENU SECTION__
+const offcanvas = new bootstrap.Offcanvas(
+  document.getElementById("offcanvasScrolling")
+);
+
 
 const offCanvasMenu = document.getElementById("offcanvasScrolling");
 offCanvasMenu.addEventListener("show.bs.offcanvas", function (event) {
@@ -600,7 +604,7 @@ const tutorial = () => {
       {
         element: document.querySelector("#body"),
         intro:
-          "<p>Double clicking anywhere on the screen will create a new todo item. Please close the menu when this tutorial is finished.</p>",
+          "<p>Double clicking anywhere on the screen will create a new todo item.</p>",
         // position: "bottom",
       },
     ],
@@ -613,6 +617,7 @@ const tutorial = () => {
     saveItems();
     draw();
     currentItemYPosition = 0;
+    offcanvas.hide();
   });
 };
 
