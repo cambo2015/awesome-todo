@@ -16,53 +16,8 @@ const blue = "#04C4D9";
 const orange = "#F2B705";
 const gold = "#ffd700";
 
-// const paper = Raphael(
-//   0,
-//   0,
-//   horizSpacing * numberofHalfHours,
-//   window.innerHeight
-// );
+
 const paper = Snap(horizSpacing * numberofHalfHours, window.innerHeight);
-
-// paper.canvas.style.backgroundColor = black;
-
-// HELPERS
-//starts at 0 goes to max-1
-
-// time:string
-
-const saveItems = () => {
-  const items = JSON.stringify(allItems);
-  localStorage.setItem("items", items);
-};
-
-const deleteAllItems = () => {
-  allItems = [];
-  currentItemYPosition = 0;
-  saveItems();
-};
-
-const chooseRandomColor = () => {
-  const colors = [pink, green, blue];
-  return colors[randomIndex(colors.length)];
-};
-
-const enterFullScreen = () => {
-  var element = document.querySelector("body");
-
-  // make the element go to full-screen mode
-  element
-    .requestFullscreen()
-    .then(function () {
-      // element has entered fullscreen mode successfully
-      alert("success");
-    })
-    .catch(function (error) {
-      // element could not enter fullscreen mode
-      alert(error);
-      console.log(error);
-    });
-};
 
 // const
 let allItems = loadItems() ?? [];
@@ -107,31 +62,38 @@ const tutorialItems = [
   },
 ];
 
-/**
- * 
- * allItems = [
-    { x: 0, y: 0, halfHours: 5, name: "Eat Breakfast", color: green },
-    { x: 200, y: vertSpacing, halfHours: 1, name: "Tea Part", color: blue },
-    { x: 400, y: vertSpacing * 2, halfHours: 1, name: "Test", color: orange },
-    {
-      x: 600,
-      y: vertSpacing * 3,
-      halfHours: 1,
-      name: "Eat Dinner",
-      color: pink,
-    },
-    { x: 700, y: vertSpacing * 4, halfHours: 1, name: "study 1", color: green },
-    { x: 800, y: vertSpacing * 5, halfHours: 1, name: "study 2", color: blue },
-    {
-      x: 900,
-      y: vertSpacing * 6,
-      halfHours: 1,
-      name: "study 3",
-      color: orange,
-    },
-    { x: 1000, y: vertSpacing * 7, halfHours: 1, name: "study 4", color: pink },
-  ];
- */
+const saveItems = () => {
+  const items = JSON.stringify(allItems);
+  localStorage.setItem("items", items);
+};
+
+const deleteAllItems = () => {
+  allItems = [];
+  currentItemYPosition = 0;
+  saveItems();
+};
+
+const chooseRandomColor = () => {
+  const colors = [pink, green, blue];
+  return colors[randomIndex(colors.length)];
+};
+
+const enterFullScreen = () => {
+  var element = document.querySelector("body");
+
+  // make the element go to full-screen mode
+  element
+    .requestFullscreen()
+    .then(function () {
+      // element has entered fullscreen mode successfully
+      alert("success");
+    })
+    .catch(function (error) {
+      // element could not enter fullscreen mode
+      alert(error);
+      console.log(error);
+    });
+};
 
 const drawBottomLines = () => {
   let timeCounter = 6; //start time will start at 6:30
@@ -298,9 +260,6 @@ const addItem = (
   const rect = paper.rect(x, y, width, height, 5);
   rect.attr("fill", color);
   rect.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-rect`);
-  //   add sound
-
-  //   edit name
 
   const text = paper
     .text(x + 3, y + 13, name.substring(0, 20))
@@ -370,7 +329,6 @@ const addItem = (
 };
 
 //___ADD ITEM via dbl click___
-
 const checkNameExists = (name) => {
   const foundItems = allItems.filter((x) => x.name === name);
   console.log(foundItems);
@@ -399,7 +357,6 @@ const createItemDblClick = (e) => {
         name,
         color: chooseRandomColor(),
       });
-
       saveItems();
       myModal.show();
       draw();
@@ -606,7 +563,7 @@ const tutorial = () => {
         // position: "bottom",
       },
     ],
-    exitOnOverlayClick:false,
+    exitOnOverlayClick: false,
   });
 
   introjObj.start();
@@ -641,16 +598,13 @@ const main = () => {
 
   saveItems();
   draw();
-  // console.log(allItems);
 
   for (let i = 0; i < allItems.length; i++) {
     const item = allItems[i];
     addtoSideMenu(item.name, item.completed);
     currentItemYPosition += vertSpacing;
   }
-  // alert("Double click anywhere on the screen to get started");
 
-  // alert();
   if (
     tutorialRan === false ||
     tutorialRan === undefined ||
