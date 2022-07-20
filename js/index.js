@@ -193,7 +193,6 @@ const arrageItems = () => {
     const element = allItems[i];
     element.y = currentItemYPosition;
     currentItemYPosition += vertSpacing;
-    // console.log(allItems);
   }
 };
 
@@ -231,11 +230,8 @@ document
   .getElementById("submit-edit-button")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    // console.log(editTaskModal);
     const taskName = document.getElementById("edittaskname").value;
     editTaskModal.hide();
-    // console.log(editTaskModal);
-    // console.log(itemObjectName);
     allItems[allItems.findIndex((x) => x.name == itemObjectName)].name =
       taskName;
     saveItems();
@@ -305,9 +301,8 @@ const addItem = (
   });
 
   makeLongerButton.touchmove((e) => {
-    // console.log(e);
     const touchX = e.touches[0].clientX;
-    // console.log(touchX);
+    
     const dx = touchX - x;
     console.log("dx", dx, "width", width);
     const newWidth = dx + width;
@@ -320,9 +315,6 @@ const addItem = (
   );
 
   rect.drag(function (dx, dy, mouseX, mouseY, e) {
-    // console.log(e.targetTouches[0].clientX);
-
-    // this.attrs.x = mouseX;
     draw();
     updateItem(name, x + dx, y, width, completed);
   });
@@ -349,7 +341,6 @@ const createItemDblClick = (e) => {
   if (menuIsOpen === false) {
     const name = "item";
     if (currentItemYPosition < window.innerHeight - 50) {
-      //change this to window.height - some value
       allItems.push({
         x: e.clientX + window.scrollX,
         y: currentItemYPosition,
@@ -367,7 +358,6 @@ const createItemDblClick = (e) => {
   }
 };
 // add new Item via dbl click
-// paper.raphael.dblclick(createItemDblClick);
 const svg = document.getElementsByTagName("svg")[0];
 svg.addEventListener("dblclick", createItemDblClick);
 
@@ -393,7 +383,6 @@ document
   .getElementById("submit-create-button")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    // console.log(myModal);
     const taskName = document.getElementById("taskname");
     const nameAlreadyExists = checkNameExists(taskName.value);
     if (nameAlreadyExists === false) {
@@ -422,7 +411,6 @@ document
 //   undo functionality
 document.addEventListener("keydown", (event) => {
   //   const platform = navigator.userAgentData.platform;
-  //   alert(platform);
   //   if (platform === "macOS") {
   if (event.ctrlKey && event.key === "z") {
   }
@@ -482,10 +470,8 @@ const addtoSideMenu = (name, checked) => {
   );
   checkbox.checked = checked;
 
-  // checkbox.classList.add(`${name}-checkbox`);
   //checkbox event listner
   checkbox.addEventListener("change", function (e) {
-    // alert(this.checked);
     const name = e.target.id.replace("-checkbox", "");
     const item = allItems.find((x) => x.name == name);
 
