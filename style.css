@@ -32,6 +32,32 @@ svg{
     cursor: pointer;
 }
 
+#mobile-only{
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    svg{
+        display:none
+    }
+    #menu-button{
+        display: none;
+    }
+    #mobile-only {
+        
+        display:inline;
+    }
+    #mobile-error-message{
+        background-color: whitesmoke;
+        color: black;
+        width:80%;
+        margin:auto;
+        margin-top: 40vh;
+        padding: 8px;
+        border-radius: 10px;
+    }
+}
+
 /* #delete-all{
     
 } */
