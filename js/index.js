@@ -16,6 +16,8 @@ const blue = "#04C4D9";
 const orange = "#F2B705";
 const gold = "#ffd700";
 
+// const platform = navigator.userAgentData.platform;
+
 
 const paper = Snap(horizSpacing * numberofHalfHours, window.innerHeight);
 
@@ -416,6 +418,15 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+
+let hasShownTouchAlert = false;
+document.addEventListener("touchstart",()=>{
+  if(hasShownTouchAlert===false){
+    alert("Touch screens are not compatible with this app and it requires a mouse. We are sorry for the inconvience.");
+    hasShownTouchAlert = true;
+  }
+})
+
 // __OFF CANVAS MENU SECTION__
 const offcanvas = new bootstrap.Offcanvas(
   document.getElementById("offcanvasScrolling")
@@ -574,6 +585,7 @@ const tutorial = () => {
 
 const main = () => {
   const tutorialRan = JSON.parse(localStorage.getItem("tutorialRan"));
+  
   if (
     tutorialRan === false ||
     tutorialRan === undefined ||
