@@ -18,7 +18,6 @@ const gold = "#ffd700";
 
 // const platform = navigator.userAgentData.platform;
 
-
 const paper = Snap(horizSpacing * numberofHalfHours, window.innerHeight);
 
 // const
@@ -258,6 +257,7 @@ const addItem = (
   const rect = paper.rect(x, y, width, height, 5);
   rect.attr("fill", color);
   rect.node.setAttribute("id", `${name.toLowerCase().replace(" ", "-")}-rect`);
+  saveItems();
 
   const text = paper
     .text(x + 3, y + 13, name.substring(0, 20))
@@ -304,7 +304,7 @@ const addItem = (
 
   makeLongerButton.touchmove((e) => {
     const touchX = e.touches[0].clientX;
-    
+
     const dx = touchX - x;
     console.log("dx", dx, "width", width);
     const newWidth = dx + width;
@@ -418,14 +418,15 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-
 let hasShownTouchAlert = false;
-document.addEventListener("touchstart",()=>{
-  if(hasShownTouchAlert===false){
-    alert("Touch screens are not compatible with this app and it requires a mouse. We are sorry for the inconvience.");
+document.addEventListener("touchstart", () => {
+  if (hasShownTouchAlert === false) {
+    alert(
+      "Touch screens are not compatible with this app and it requires a mouse. We are sorry for the inconvience."
+    );
     hasShownTouchAlert = true;
   }
-})
+});
 
 // __OFF CANVAS MENU SECTION__
 const offcanvas = new bootstrap.Offcanvas(
@@ -585,7 +586,7 @@ const tutorial = () => {
 
 const main = () => {
   const tutorialRan = JSON.parse(localStorage.getItem("tutorialRan"));
-  
+
   if (
     tutorialRan === false ||
     tutorialRan === undefined ||
